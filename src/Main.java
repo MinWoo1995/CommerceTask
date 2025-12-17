@@ -6,6 +6,8 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        //STEP 1. 객체 지향 설계를 적용해 상품 관리 시스템을 프로그래밍해보자
+        //JAVA 프로그램을 실행하면 여러 전자제품을 출력, 제시된 상품 중 입력받은 숫자에 따라 다른 로직을 실행하는 코드를 작성합니다.
         //함수에서 Product 클래스를 생성하여 상품 목록을 추가합니다.
         //Product 객체 생성을 통해 상품명, 가격, 설명, 재고수량을 세팅합니다. [키워드: new]
         //Product클래스 생성자 (String productName, double productPrice, String productInformation, int productQuantity)
@@ -15,6 +17,7 @@ public class Main {
         Product AirPodsPro = new Product("AirPods Pro",350000,"노이즈 캔슬링 무선 이어폰",80);
 
         //List를 선언하여 여러 Product을 추가합니다. [List<Product> products = new ArrayList<>();]
+        //CommerceSystem클래스로 이동
         List<Product> products = new ArrayList<>();
         products.add(GalaxyS25);
         products.add(iPhone16);
@@ -33,52 +36,62 @@ public class Main {
 //
 //                커머스 플랫폼을 종료합니다.
         //Product클래스 생성자 (String productName, double productPrice, String productInformation, int productQuantity)
-        while(true){
-            System.out.println("        [ 실시간 커머스 플랫폼 - 전자제품 ]");
-            for (int index=0; index<products.size(); index++) {
-                int i = index+1;
-                System.out.println(i+"."+products.get(index));
-            }
-            System.out.println("0. 종료           | 프로그램 종료");//7칸 띄움
-            break;
-        }
 
-        Scanner scanner = new Scanner(System.in);//입력을 받기위한 스캐너생성
-        String inputNum;//입력값 받는 변수
-        int passInputNum;
-        while (true) {
-            System.out.print("메뉴 번호를 입력 해주세요 :  ");
-            // Scanner를 사용하여 양의 정수를 입력받고 적합한 타입의 변수에 저장합니다.
-            //어떤 값이 입력될지 모르기때문에 String 타입으로 입력 받기
-            inputNum = scanner.nextLine();//입력 받기//첫번재 양의 정수를 입력받는다.
-            boolean condition = true;//입력값 검증상태를 저장하기 위해서
+//        System.out.println("        [ 실시간 커머스 플랫폼 - 전자제품 ]");
+//        for (int index=0; index<products.size(); index++) {
+//            int i = index+1;
+//            System.out.println(i+"."+products.get(index));
+//        }
+//        System.out.println("0. 종료           | 프로그램 종료");//7칸 띄움
 
-            for (int i = 0; i < inputNum.length(); i++) {
-                char a = inputNum.charAt(i);//입력값 0번째부터 담아서 입력값을 1자리씩 검증하기 위한단계
+//        Scanner scanner = new Scanner(System.in);//입력을 받기위한 스캐너생성
+//        String inputNum;//입력값 받는 변수
+//        int passInputNum;
+//        while (true) {
+//            System.out.print("메뉴 번호를 입력 해주세요 :  ");
+//            // Scanner를 사용하여 양의 정수를 입력받고 적합한 타입의 변수에 저장합니다.
+//            //어떤 값이 입력될지 모르기때문에 String 타입으로 입력 받기
+//            inputNum = scanner.nextLine();//입력 받기//첫번재 양의 정수를 입력받는다.
+//            boolean condition = true;//입력값 검증상태를 저장하기 위해서
+//
+//            for (int i = 0; i < inputNum.length(); i++) {
+//                char a = inputNum.charAt(i);//입력값 0번째부터 담아서 입력값을 1자리씩 검증하기 위한단계
+//
+//                if (a >= '0' && a <= '9') {
+//                    continue;//입력값이 0부터 9사이 숫자면 통과
+//                }else {
+//                    condition = false;
+//                    break;
+//                }
+//            }
+//
+//            if (condition == true) {
+//                passInputNum = Integer.parseInt(inputNum);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
+//                if(0< passInputNum && passInputNum <= products.size()) {
+//                    Product product = products.get(passInputNum-1);
+//                    System.out.println(product);
+//                }else if(passInputNum == 0){
+//                    System.out.println("         커머스 플랫폼을 종료합니다.");
+//                    System.exit(0);
+//                }else {//숫자이기는 하나 메뉴범위를 벗어난 번호인 경우
+//                    System.out.println("0을 포함한 해당되는 메뉴의 번호만 입력하세요.(0~"+products.size()+")");
+//                }
+//            }else{//숫자가 아닌경우
+//                System.out.println("0을 포함한 해당되는 메뉴의 번호만 입력하세요.(0~"+products.size()+")");
+//            }
+//        }
 
-                if (a >= '0' && a <= '9') {
-                    continue;//입력값이 0부터 9사이 숫자면 통과
-                }else {
-                    condition = false;
-                    break;
-                }
-            }
+        //STEP 2. 객체 지향 설계를 적용해 순서 제어를 클래스로 관리하기
+        //CommerceSystem 클래스 생성하기
+        //설명: 커머스 플랫폼의 상품을 관리하고 사용자 입력을 처리하는 클래스입니다.
+        //Product를 관리하는 리스트가 필드로 존재합니다.
+        //main 함수에서 관리하던 입력과 반복문 로직은 이제 start 함수를 만들어 관리합니다.
+        //List<Product> products 는 CommerceSystem 클래스 생성자를 통해 값을 할당합니다.
+        //CommerceSystem 객체를 생성하고 사용하는 main 함수에서 객체를 생성할 때 값을 넘겨줍니다.
+        CommerceSystem commerceSystem = new CommerceSystem(products);//리스트 배열을 통째로 넘겨서 연결
+        commerceSystem.start();
 
-            if (condition == true) {
-                passInputNum = Integer.parseInt(inputNum);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
-                if(0< passInputNum && passInputNum <= products.size()) {
-                    Product product = products.get(passInputNum-1);
-                    System.out.println(product);
-                }else if(passInputNum == 0){
-                    System.out.println("         커머스 플랫폼을 종료합니다.");
-                    System.exit(0);
-                }else {//숫자이기는 하나 메뉴범위를 벗어난 번호인 경우
-                    System.out.println("0을 포함한 해당되는 메뉴의 번호만 입력하세요.(0~"+products.size()+")");
-                }
-            }else{//숫자가 아닌경우
-                System.out.println("0을 포함한 해당되는 메뉴의 번호만 입력하세요.(0~"+products.size()+")");
-            }
-        }
-        //scanner.close();//스캐너 닫기
+
+
     }
 }
