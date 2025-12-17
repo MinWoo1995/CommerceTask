@@ -53,5 +53,4 @@ public class Product {
         // %-15s: 15자리를 확보하고 왼쪽 정렬 (글자 길이에 상관없이 줄 맞춤)
         return String.format("%-15s | %,10.0f원 | %s",productName, productPrice, productInformation);
     }
-
 }

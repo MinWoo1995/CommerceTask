@@ -18,11 +18,11 @@ public class Main {
 
         //List를 선언하여 여러 Product을 추가합니다. [List<Product> products = new ArrayList<>();]
         //CommerceSystem클래스로 이동
-        List<Product> products = new ArrayList<>();
-        products.add(GalaxyS25);
-        products.add(iPhone16);
-        products.add(MacBookPro);
-        products.add(AirPodsPro);
+        List<Product> electronicsProducts = new ArrayList<>();
+        electronicsProducts.add(GalaxyS25);
+        electronicsProducts.add(iPhone16);
+        electronicsProducts.add(MacBookPro);
+        electronicsProducts.add(AirPodsPro);
 
         //반복문을 활용해 products를 탐색하면서 하나씩 접근합니다.
         //출력예시
@@ -88,7 +88,24 @@ public class Main {
         //main 함수에서 관리하던 입력과 반복문 로직은 이제 start 함수를 만들어 관리합니다.
         //List<Product> products 는 CommerceSystem 클래스 생성자를 통해 값을 할당합니다.
         //CommerceSystem 객체를 생성하고 사용하는 main 함수에서 객체를 생성할 때 값을 넘겨줍니다.
-        CommerceSystem commerceSystem = new CommerceSystem(products);//리스트 배열을 통째로 넘겨서 연결
+//        CommerceSystem commerceSystem = new CommerceSystem(products);//리스트 배열을 통째로 넘겨서 연결
+//        commerceSystem.start();
+
+        //STEP 3. 객체 지향 설계를 적용해 상품 카테고리와 고객 관리를 클래스 기반으로 관리하기
+//        Category` 클래스 생성하기
+//        설명 : Product 클래스를 관리하는 클래스입니다.
+//        전자제품, 의류, 식품 등 각 카테고리 내에 여러 `Product`를 만들어 줍니다.
+//        `List<Product>` 은 `CommerceSystem` 클래스가 관리하기에 적절하지 않으므로 Category 클래스가 관리하도록 변경합니다.
+//        여러 상품들을 포함하는 상위 개념 '전자제품' 같은 `카테고리 이름` 필드를 갖습니다.
+//        카테고리 이름을 반환하는 메서드가 구현되어야 합니다.
+//        **`Customer` 클래스 생성하기**[완료]
+//        설명 : 고객 정보를 관리하는 클래스입니다.
+//        클래스는 `고객명`, `이메일`, `등급` 필드를 갖습니다.
+
+        List<Category> category = new ArrayList<Category>();
+        Category electronics = new Category("Electronics",electronicsProducts);
+        category.add(electronics);
+        CommerceSystem commerceSystem = new CommerceSystem(category);//리스트 배열을 통째로 넘겨서 연결
         commerceSystem.start();
 
 
