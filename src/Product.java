@@ -43,9 +43,10 @@ public class Product {
     public String getproductInformation() {
         return productInformation;
     }
-    public int getproductQuantity() {
-        return productQuantity;
+    public void setProductQuantity(int i) {
+        this.productQuantity=productQuantity+i;
     }
+    public void set() {}
 
     @Override
     public String toString() {//출력시 원하는 출력값을 위해서 출력 양식 설정

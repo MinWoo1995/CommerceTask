@@ -108,7 +108,9 @@ public class Main {
         CommerceSystem commerceSystem = new CommerceSystem(category);//리스트 배열을 통째로 넘겨서 연결
         commerceSystem.start();
 
-
+        //**STEP 4**. 캡슐화 적용하기[이미 설계하면서 캡슐화를 셋팅하여 자동으로 완료]
+        //`Product`, `Category`, `Customer` 그리고 `CommerceSystem` 클래스의 필드에 직접 접근하지 못하도록 설정합니다.
+        //Getter와 Setter 메서드를 사용해 데이터를 관리합니다.
 
     }
 }
