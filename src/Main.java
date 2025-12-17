@@ -78,6 +78,7 @@ public class Main {
             }else{//숫자가 아닌경우
                 System.out.println("0을 포함한 해당되는 메뉴의 번호만 입력하세요.(0~"+products.size()+")");
             }
+
         }
         //scanner.close();//스캐너 닫기
     }
