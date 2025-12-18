@@ -12,7 +12,7 @@ public class Main {
         //Product 객체 생성을 통해 상품명, 가격, 설명, 재고수량을 세팅합니다. [키워드: new]
         //Product클래스 생성자 (String productName, double productPrice, String productInformation, int productQuantity)
         Product GalaxyS25 = new Product("Galaxy S25",1200000,"최신 안드로이드 스마트폰",50);
-        Product iPhone16 = new Product("iPhone 16",1350000,"Apple의 최신 스마트폰",10);
+        Product iPhone16 = new Product("iPhone 16",1350000,"Apple의 최신 스마트폰",0);
         Product MacBookPro = new Product("MacBook Pro",2400000,"M3 칩셋이 탑재된 노트북",20);
         Product AirPodsPro = new Product("AirPods Pro",350000,"노이즈 캔슬링 무선 이어폰",80);
 
@@ -105,7 +105,9 @@ public class Main {
         List<Category> category = new ArrayList<Category>();
         Category electronics = new Category("Electronics",electronicsProducts);
         category.add(electronics);
-        CommerceSystem commerceSystem = new CommerceSystem(category);//리스트 배열을 통째로 넘겨서 연결
+        //public Customer(String customerName, String customerEmail, String customerRating) 생성자 매개변수
+        Customer  customer1 = new Customer("민우","minwoo@gmail.com");
+        CommerceSystem commerceSystem = new CommerceSystem(category,customer1);//리스트 배열을 통째로 넘겨서 연결
         commerceSystem.start();
 
         //**STEP 4**. 캡슐화 적용하기[이미 설계하면서 캡슐화를 셋팅하여 자동으로 완료]

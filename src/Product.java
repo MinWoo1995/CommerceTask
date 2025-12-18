@@ -30,8 +30,9 @@ public class Product {
     public void setproductInformation(String productInformation) {
         this.productInformation=productInformation;
     }
-    public void setproductQuantity(int productQuantity) {
-        this.productQuantity=productQuantity;
+    public int setproductQuantity() {
+        this.productQuantity=this.productQuantity-1;
+        return productQuantity;
     }
     //상품 정보 출력(게터)
     public String getProductName() {
@@ -43,10 +44,14 @@ public class Product {
     public String getproductInformation() {
         return productInformation;
     }
-    public void setProductQuantity(int i) {
-        this.productQuantity=productQuantity+i;
+    public int setProductQuantity(int i) {
+        this.productQuantity=productQuantity-i;
+        return productQuantity;
     }
-    public void set() {}
+    public int getproductQuantity() {
+        return productQuantity;
+    }
+
 
     @Override
     public String toString() {//출력시 원하는 출력값을 위해서 출력 양식 설정
