@@ -30,14 +30,17 @@ public class Customer {
     public void addToCart(Product product) {
         this.product.add(product);
     }
+    public List<Product> getToCart() {
+        return this.product;
+    }
     public List<Product> getProductList() {
         return product;
     }
     public Product getProduct(int id) {
         return product.get(id);
     }
-    public double getProductTotalPrice() {
-        double totalPrice = 0;
+    public int getProductTotalPrice() {
+        int totalPrice = 0;
         for (Product product : product) {
             product.getproductPrice();
             totalPrice += product.getproductPrice();

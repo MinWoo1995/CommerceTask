@@ -107,7 +107,9 @@ public class Main {
         category.add(electronics);
         //public Customer(String customerName, String customerEmail, String customerRating) 생성자 매개변수
         Customer  customer1 = new Customer("민우","minwoo@gmail.com");
-        CommerceSystem commerceSystem = new CommerceSystem(category,customer1);//리스트 배열을 통째로 넘겨서 연결
+        List<Customer> customers = new ArrayList<>();
+        customers.add(customer1);
+        CommerceSystem commerceSystem = new CommerceSystem(category,customer1,"admin123",customers);//리스트 배열을 통째로 넘겨서 연결
         commerceSystem.start();
 
         //**STEP 4**. 캡슐화 적용하기[이미 설계하면서 캡슐화를 셋팅하여 자동으로 완료]

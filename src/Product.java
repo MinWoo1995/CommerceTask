@@ -6,12 +6,12 @@ public class Product {
 
     //속성
     private String productName;
-    private double productPrice;
+    private int productPrice;
     private String productInformation;
     private int productQuantity;
 
     //생성자
-    public Product(String productName, double productPrice, String productInformation, int productQuantity) {
+    public Product(String productName, int productPrice, String productInformation, int productQuantity) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productInformation = productInformation;
@@ -24,7 +24,7 @@ public class Product {
     public void setProductName(String productName) {
         this.productName=productName;
     }
-    public void setproductPrice(double productPrice) {
+    public void setproductPrice(int productPrice) {
         this.productPrice=productPrice;
     }
     public void setproductInformation(String productInformation) {
@@ -34,11 +34,14 @@ public class Product {
         this.productQuantity=this.productQuantity-1;
         return productQuantity;
     }
+    public void setproductQuantity2(int productQuantity) {
+        this.productQuantity=productQuantity;
+    }
     //상품 정보 출력(게터)
     public String getProductName() {
         return productName;
     }
-    public double getproductPrice() {
+    public int getproductPrice() {
         return productPrice;
     }
     public String getproductInformation() {
@@ -55,8 +58,6 @@ public class Product {
 
     @Override
     public String toString() {//출력시 원하는 출력값을 위해서 출력 양식 설정
-        // %,.0f: 천 단위 콤마 추가, 소수점은 표시 안 함
-        // %-15s: 15자리를 확보하고 왼쪽 정렬 (글자 길이에 상관없이 줄 맞춤)
-        return String.format("%-15s | %,10.0f원 | %s",productName, productPrice, productInformation);
+        return String.format("%s | %,10d원 | %s",productName, productPrice, productInformation);
     }
 }
