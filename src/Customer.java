@@ -1,19 +1,46 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+public class  Customer {
     //고객 정보를 관리하는 클래스
     //속성
     private String customerName;
     private String customerEmail;
-    private String customerRating;//브론즈,실버,플레티넘,VIP 순서
     private List<Product> product =  new ArrayList<Product>();
+
+    private Rating customerRating;//브론즈,실버,플레티넘,VIP 순서
+    private double customerDiscount;
+
+    public enum Rating{
+        //enum 정의(속성)
+        BRONZE(0.0),
+        SILVER(0.05),
+        GOLD(0.1),
+        PLATINUM(0.15);
+
+        private final double rate;
+
+
+        //생성자
+        Rating(double rate) {
+            this.rate = rate;
+        }
+
+        //기능
+        public double getRate() {
+            return rate;
+        }
+
+    }
+
+
+
 
     //생성자
     public Customer(String customerName, String customerEmail) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
-        this.customerRating = "브론즈";//초기 등급은 브론즈
+        this.customerRating = Rating.BRONZE;//초기 등급은 브론즈
     }
 
     //기능
@@ -23,7 +50,7 @@ public class Customer {
     public String getcustomerEmail() {
         return customerEmail;
     }
-    public String getcustomerRating() {
+    public Rating getcustomerRating() {
         return customerRating;
     }
 
@@ -46,5 +73,11 @@ public class Customer {
             totalPrice += product.getproductPrice();
         }
         return totalPrice;
+    }
+    public Rating getCustomerRating() {
+        return customerRating;
+    }
+    public void setCustomerRating(Rating rating) {
+        this.customerRating = rating;
     }
 }

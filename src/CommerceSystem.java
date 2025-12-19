@@ -144,9 +144,61 @@ public class CommerceSystem {
                                     if(passInputNum5 == 2){
                                         break;
                                     }else if(passInputNum5 == 1){
-                                        System.out.print("주문이 완료되었습니다! 총 금액: ");
-                                        System.out.printf("%,10d원", this.customer.getProductTotalPrice());//총금액 출력하기
-                                        System.out.println("");
+                                        String rating;
+                                        while (true) {
+                                            System.out.println("고객 등급을 입력해주세요.");
+                                            System.out.println("1. BRONZE   :  0% 할인");
+                                            System.out.println("2. SILVER   :  5% 할인");
+                                            System.out.println("3. GOLD     : 10% 할인");
+                                            System.out.println("4. PLATINUM : 15% 할인");
+                                            System.out.print("등급 번호를 입력하세요 : ");
+                                            String inputNum14 = scanner.nextLine();//입력 받기//첫번재 양의 정수를 입력받는다.
+                                            boolean condition14 = true;//입력값 검증상태를 저장하기 위해서
+                                            System.out.println("");
+                                            for (int i = 0; i < inputNum5.length(); i++) {
+                                                char a = inputNum5.charAt(i);//입력값 0번째부터 담아서 입력값을 1자리씩 검증하기 위한단계
+
+                                                if (a >= '0' && a <= '9') {
+                                                    continue;//입력값이 0부터 9사이 숫자면 통과
+                                                } else {
+                                                    condition14 = false;
+                                                    break;
+                                                }
+                                            }
+                                            if (condition14 == true) {
+                                                int passInputNum14 = Integer.parseInt(inputNum14);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
+                                                if (0 < passInputNum14 && passInputNum14 <= 4) {//카테고리 범위안에 숫자가 맞는지 검증
+                                                    if (passInputNum14 == 1) {//브론즈 할인
+                                                        double discountPrice = this.customer.getProductTotalPrice();//총금액 에서 할인율 구하기
+                                                        this.customer.setCustomerRating(Customer.Rating.BRONZE);
+                                                        rating = "BRONZE";
+                                                        break;
+                                                    }else if(passInputNum14 == 2){//실버 할인
+                                                        this.customer.setCustomerRating(Customer.Rating.SILVER);
+                                                        rating = "SILVER";
+                                                        double discountPrice = this.customer.getProductTotalPrice()-(this.customer.getProductTotalPrice()*0.05);//총금액 에서 할인율 구하기
+                                                        break;
+                                                    }else if(passInputNum14 == 3){//골드 할인
+                                                        this.customer.setCustomerRating(Customer.Rating.GOLD);
+                                                        rating = "GOLD";
+                                                        double discountPrice = this.customer.getProductTotalPrice()-(this.customer.getProductTotalPrice()*0.1);//총금액 에서 할인율 구하기
+                                                        break;
+                                                    }else if(passInputNum14 == 4){
+                                                        this.customer.setCustomerRating(Customer.Rating.PLATINUM);
+                                                        rating = "PLATINUM";
+                                                        double discountPrice = this.customer.getProductTotalPrice()-(this.customer.getProductTotalPrice()*0.15);//총금액 에서 할인율 구하기
+                                                        break;
+                                                    }
+                                                }
+                                            }else{
+                                                System.out.println("메뉴 번호만 입력해주세요");
+                                            }
+                                        }
+                                        System.out.println("주문이 완료되었습니다!");
+                                        System.out.printf("할인전 금액 : %d\n", this.customer.getProductTotalPrice());
+                                        double currentRate = customer.getCustomerRating().getRate();
+                                        System.out.printf("%s등급 할인(%.2f) : -%.0f할인\n",rating,currentRate,this.customer.getProductTotalPrice()*currentRate);
+                                        System.out.printf("최종 결제 금액 : %.0f원", this.customer.getProductTotalPrice()-this.customer.getProductTotalPrice()*currentRate);//총금액 출력하기
                                         for(Product p : this.customer.getProductList()){
                                             int oldQuantity = p.getproductQuantity();
                                             int newQuantity = p.setProductQuantity(1);
