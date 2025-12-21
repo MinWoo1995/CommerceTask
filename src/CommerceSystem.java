@@ -111,16 +111,17 @@ public class CommerceSystem {
                         System.out.println("아래와 같이 주문 하시겠습니까?");
                         System.out.println("");
                         System.out.println("[ 장바구니 내역 ]");
-                        Set<Product> distinctProducts = new HashSet<>(this.customer.getProductList());
-                        for(Product p : distinctProducts){//장바구니 상품 출력
-                            int productCount = Collections.frequency(this.customer.getProductList(), p);
-                            System.out.printf("%s | %,10d원 | %s | 수량: %d개%n", p.getProductName(), p.getproductPrice(), p.getproductInformation(), productCount);//출력하기
-                        }
+                        this.customer.getProductList().stream()//준비동작
+                                .distinct() // 중복이 있더라도 화면에는 1개만 출력하겠다.
+                                .forEach(p -> {//상품 1개씩 돌아가면서 {}로직을 수행
+                                    long count = this.customer.getProductList().stream().filter(item -> item.equals(p)).count();//상품p와 동일한 상품의 수를 카운트해라
+                                    System.out.printf("%s | %,10d원 | 수량: %d개%n", p.getProductName(), p.getproductPrice(), count);//카운트한 재고수량을 출력
+                                });
                         System.out.println("");
                         System.out.println("[ 총 주문 금액 ]");
                         System.out.printf("%,10d원", this.customer.getProductTotalPrice());//총금액 출력하기
                         System.out.println("");
-                        System.out.println("1. 주문 확정      2. 메인으로 돌아가기");
+                        System.out.println("1. 주문 확정  2.장바구니 상품 삭제   3. 메인으로 돌아가기");
                         System.out.print("메뉴 번호를 입력 해주세요 :  ");
                         while (true) {
                             String inputNum5 = scanner.nextLine();//입력 받기//첫번재 양의 정수를 입력받는다.
@@ -140,8 +141,8 @@ public class CommerceSystem {
                             }
                             if (condition5 == true) {
                                 int passInputNum5 = Integer.parseInt(inputNum5);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
-                                if (0 < passInputNum5 && passInputNum5 <= 2) {//카테고리 범위안에 숫자가 맞는지 검증
-                                    if(passInputNum5 == 2){
+                                if (0 < passInputNum5 && passInputNum5 <= 3) {//카테고리 범위안에 숫자가 맞는지 검증
+                                    if(passInputNum5 == 3){
                                         break;
                                     }else if(passInputNum5 == 1){
                                         String rating;
@@ -207,6 +208,27 @@ public class CommerceSystem {
                                         this.customer.getProductList().clear();//장바구니 초기화
                                         isGobackStart = true;
                                         break;
+                                    }else if(passInputNum5==2){//장바구니 상품삭제
+                                        while(true){
+                                            System.out.print("삭제할 상품명을 입력해주세요 (0. 취소): ");
+                                            String inputNum16 = scanner.nextLine();//입력 받기
+                                            System.out.println("");
+                                            if (inputNum16.equals("0")){
+                                                System.out.println("삭제를 취소하고 이전 메뉴로 돌아갑니다.");
+                                                break;
+                                            }
+                                            boolean removed = this.customer.getProductList().removeIf(p -> p.getProductName().equals(inputNum16));
+                                            if (removed) {
+                                                System.out.println(inputNum16 + " 상품이 장바구니에서 삭제되었습니다.");
+                                                isGobackStart =  true;
+                                                break;
+                                            } else {
+                                                System.out.println("장바구니에 해당 이름의 상품이 없습니다.");
+                                            }
+                                        }
+                                        if(isGobackStart==true){
+                                            break;
+                                        }
                                     }
                                 }
                             }else{
@@ -673,8 +695,102 @@ public class CommerceSystem {
                 continue;
             }
             boolean isGoback= false;;
+            boolean filterUsed =  false;
             //선택한 해당 카테고리의 상품목록을 불러오기
-            while (true) {//카테고리 진입시
+            while (true) {//카테고리 진입시 - 상품필터보여주고 - 전체상품보기 하면 리스트 보여주는것으로 수정
+                while(true){//입력 검증및 상품 필터 로직 구현
+                    System.out.println("[ " + this.category.get(categoryNumber - 1).getCategoryName() + " 카테고리 ]");
+                    System.out.println("1. 전체 상품 보기");
+                    System.out.println("2. 가격대별 필터링 (100만원 이하)");
+                    System.out.println("3. 가격대별 필터링 (100만원 초과)");
+                    System.out.println("0. 뒤로가기");
+
+                    String inputNum15;//입력값 받는 변수
+                    int passInputNum15;//검증이 끝난 입력값 저장 변수
+                    System.out.print("메뉴 번호를 입력 해주세요 :  ");
+                    inputNum15 = scanner.nextLine();//입력 받기
+                    boolean condition = true;//입력값 검증상태를 저장하기 위해서
+                    System.out.println("");
+                    for (int i = 0; i < inputNum15.length(); i++) {
+                        char a = inputNum15.charAt(i);//입력값 0번째부터 담아서 입력값을 1자리씩 검증하기 위한단계
+
+                        if (a >= '0' && a <= '9') {
+                            continue;//입력값이 0부터 9사이 숫자면 통과
+                        } else {
+                            condition = false;
+                            break;
+                        }
+                    }
+                    if (condition == true) {
+                        Category selectedCategory = this.category.get(categoryNumber - 1);//categoryNumber번째 카테고리 products 불러오기
+                        passInputNum15 = Integer.parseInt(inputNum15);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
+                        if (0 < passInputNum15 && passInputNum15 <= 3) {//해당 products의 사이즈범위내 숫자를 입력받기
+                            if(passInputNum15 == 1){//1. 전체 상품 보기
+                                System.out.println("[ " + this.category.get(categoryNumber - 1).getCategoryName() + " 카테고리 ]");
+                                products = selectedCategory.getProducts();//불러온 해당 카테고리의 상품들을 products 객체에 담기
+                                for (int index = 0; index < products.size(); index++) {//해당 객체의 범위만큼만 돌도록 하기
+                                    int i = index + 1;
+                                    System.out.println(i + ". " + products.get(index));//반복문을 통해 리스트 출력
+                                }
+                                System.out.println("0. 뒤로가기");
+                                if(customer.addToCartMethod(products)){
+                                    filterUsed = true;
+                                    isGoback = true;
+                                    break;
+                                }
+                            }else if(passInputNum15 == 2){//2. 가격대별 필터링 (100만원 이하)
+                                products = selectedCategory.getProducts().stream()
+                                        .filter(p -> p.getproductPrice() <= 1000000) // 조건: 가격이 1,000,000 이하인 것만!
+                                        .toList();
+                                for (int index = 0; index < products.size(); index++) {
+                                    Product p = products.get(index);
+                                    System.out.printf("%d. %s | %,d원 | %s | 재고: %d개\n",(index+1),p.getProductName(), p.getproductPrice(), p.getproductInformation(), p.getproductQuantity());
+                                    System.out.println("0. 뒤로가기");
+                                }
+                                if(customer.addToCartMethod(products)){
+                                    filterUsed = true;
+                                    isGoback = true;
+                                    break;
+                                }
+                                break;
+                            }else if(passInputNum15 == 3){//3. 가격대별 필터링 (100만원 초과)
+                                products = selectedCategory.getProducts().stream()
+                                        .filter(p -> p.getproductPrice() > 1000000) // 조건: 가격이 1,000,000  초과인 것만!
+                                        .toList();
+                                for (int index = 0; index < products.size(); index++) {
+                                    Product p = products.get(index);
+                                    System.out.printf("%d. %s | %,d원 | %s | 재고: %d개\n",(index+1),p.getProductName(), p.getproductPrice(), p.getproductInformation(), p.getproductQuantity());
+                                    System.out.println("0. 뒤로가기");
+                                }
+                                if(customer.addToCartMethod(products)){
+                                    filterUsed = true;
+                                    isGoback = true;
+                                    break;
+                                }
+                                break;
+                            }
+                            break;
+                        } else if (passInputNum15 == 0) {//0이면 뒤로가기
+                            isGoback = true;
+                            break;
+                        } else {//숫자이기는 하나 메뉴범위를 벗어난 번호인 경우
+                            System.out.println("0을 포함한 해당되는 메뉴의 번호만 입력하세요.");
+                            System.out.println("");
+                        }
+                    } else {//숫자가 아닌경우
+                        System.out.println("0을 포함한 해당되는 메뉴의 번호만 입력하세요.");
+                        System.out.println("");
+                    }
+                }
+                if (filterUsed) {
+                    // 이미 addToCartMethod를 마쳤으니 아래 중복 코드를 실행하지 않고
+                    // 다시 카테고리 메뉴를 보여주거나 메인으로 나가기
+                    if (isGoback) break; // 메인으로 나가기
+                    continue; // 다시 필터 메뉴로 돌아가기
+                }
+                if(isGoback){
+                    break;
+                }
 
                 System.out.println("[ " + this.category.get(categoryNumber - 1).getCategoryName() + " 카테고리 ]");
                 Category selectedCategory = this.category.get(categoryNumber - 1);//categoryNumber번째 카테고리 products 불러오기
@@ -693,6 +809,7 @@ public class CommerceSystem {
                 //어떤 값이 입력될지 모르기때문에 String 타입으로 입력 받기
                 inputNum2 = scanner.nextLine();//입력 받기//첫번재 양의 정수를 입력받는다.
                 boolean condition = true;//입력값 검증상태를 저장하기 위해서
+                System.out.println("");
 
                 for (int i = 0; i < inputNum2.length(); i++) {
                     char a = inputNum2.charAt(i);//입력값 0번째부터 담아서 입력값을 1자리씩 검증하기 위한단계
