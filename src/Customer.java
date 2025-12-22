@@ -104,7 +104,13 @@ public class  Customer {
             }
 
             if (condition == true) {
-                passInputNum = Integer.parseInt(inputNum2);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
+                //트라이 캐치를 넣게되면 for문을 통한 입력검증 단계가 획기적으로 줄어들수 있다.
+                try{//숫자가 아닌값이 들어온경우
+                    passInputNum = Integer.parseInt(inputNum2);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
+                }catch(NumberFormatException e){
+                    System.out.print("숫자만 입력해주세요");
+                    continue;
+                }
                 if (0 < passInputNum && passInputNum <= products.size()) {//해당 products의 사이즈범위내 숫자를 입력받기
                     product = products.get(passInputNum - 1);//인덱스 값으로 접근하여 선택한 상품 꺼내기
                     System.out.print("선택한 상품: ");//출력하기
@@ -153,7 +159,12 @@ public class  Customer {
                 }
             }
             if (condition3 == true) {
-                passInputNum3 = Integer.parseInt(inputNum3);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
+                try{//숫자가 아닌값이 들어온경우
+                    passInputNum3 = Integer.parseInt(inputNum3);//검증이 끝난 문자열을 정수로 변환하여 변수에 저장
+                }catch(NumberFormatException e){
+                    System.out.print("숫자만 입력해주세요");
+                    continue;
+                }
                 if(passInputNum3 == 1) {//1번 입력시 장바구니에 추가 하였다고 출력
                     if(product.getproductQuantity() <= 0){
                         System.out.printf("%s의 재고가 부족합니다.",product.getProductName());
